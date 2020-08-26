@@ -4,7 +4,7 @@ void display_list(List &p)
     Node *start = p.L->next;
     while(start != p.L)
     {
-        cout<<"("<<start->power<<" "<<start->coeff<<") ";
+        cout<<"("<<start->coeff<<" "<<start->power<<") ";
         start = start->next;
     }
     cout<<endl;
