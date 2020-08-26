@@ -1,34 +1,41 @@
 #include "list.h"
-void display_list(List p)
+void display_list(List &p)
 {
     Node *start = p.L->next;
     while(start != p.L)
     {
-        cout<<start->data<<" ";
+        cout<<"("<<start->power<<" "<<start->coeff<<") ";
         start = start->next;
     }
     cout<<endl;
 }
-void insert(List p,int x)
+void insert(List &p,int x,int y)
 {
-    Node *ptr = new Node(x);
-    if(p.L->next == NULL)
+    Node *ptr = new Node(x,y);
+    Node *L = p.L;
+    if(L->next == NULL)
     {
-        p.L->next = ptr;
-        ptr->next = p.L;
+        L->next = ptr;
+        ptr->next = L;
     }
     else
-    {
-        ptr->next = p.L->next;
-        p.L->next = ptr;   
+    {   
+        Node *start = L;
+        L->power = x+1;
+        while(start->next->power < x)
+        {
+            start = start->next;
+        }
+        ptr->next = start->next;
+        start->next = ptr;
     }
 }
-void Delete(List p,int x)
+void Delete(List &p,int x)
 {
     Node *L = p.L;
     Node *start = L;
-    L->data = x;
-    while(start->next->data != x)
+    L->coeff = x;
+    while(start->next->coeff != x)
     {
         start = start->next;
     }
@@ -38,5 +45,5 @@ void Delete(List p,int x)
         start->next = start->next->next;
         delete(temp);
     }
-    L->data = -1;
+    L->coeff = L->power = -1;
 }

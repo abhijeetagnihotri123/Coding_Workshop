@@ -4,10 +4,12 @@
 #include <string>
 using namespace std;
 struct Node {
-    int data;
+    int coeff;
+    int power;
     Node *next;
-    Node(int a) {
-        data = a;
+    Node(int a,int b) {
+        coeff = b;
+        power = a;
         next = NULL;
     }
 };
@@ -17,10 +19,10 @@ class List {
     void push(int);
     int pop();
     List() { 
-        L = new Node(-1);// L is dummy 
+        L = new Node(-1,-1);// L is dummy 
     }
 };
-void display_list(List);
-void insert(List,int);
-void Delete(List,int);
+void display_list(List&);
+void insert(List&,int,int);
+void Delete(List&,int);
 #endif
