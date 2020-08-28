@@ -2,11 +2,17 @@
 void display_list(List &p)
 {
     Node *start = p.L->next;
-    while(start != p.L)
+    if(start == NULL)
+    {   
+        cout<<"Empty polynomial\n";
+        return;
+    }
+    while(start->next != p.L)
     {
-        cout<<"("<<start->coeff<<" "<<start->power<<") ";
+        cout<<start->coeff<<"*x^"<<start->power<<"+";
         start = start->next;
     }
+    cout<<start->coeff<<"*x^"<<start->power;
     cout<<endl;
 }
 void insert(List &p,int x,int y)
@@ -23,7 +29,7 @@ void insert(List &p,int x,int y)
         Node *start = L;
         L->power = x+1;
         while(start->next->power < x)
-        {
+        {   
             start = start->next;
         }
         ptr->next = start->next;
@@ -46,4 +52,25 @@ void Delete(List &p,int x)
         delete(temp);
     }
     L->coeff = L->power = -1;
+}
+Node *Find(List &L,int x)
+{
+    Node *l = L.L;
+    Node *result = NULL;
+    if(l->next == NULL)
+    {
+        result = NULL;
+    }
+    else
+    {   
+        Node *start = l->next;
+        l->power = x;
+        while(start->power != x)
+        {   
+            start = start->next;
+        }
+        l->power = -1;
+        result = start == l?NULL:start;
+    }
+    return result;
 }

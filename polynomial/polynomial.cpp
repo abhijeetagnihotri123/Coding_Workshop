@@ -96,18 +96,14 @@ void parse_expression(string &s,poly &p)
         {
             sign = s[i];
             coefficient = extract_term(str,exponent,sign); 
-            cout<<coefficient<<" "<<exponent<<endl;
             str = "";
-            insert(p.L,exponent,coefficient);
+            Insert(p,exponent,coefficient);
         }
         else 
         {
             str+=s[i];   
         }
     }
-    coefficient = extract_term(str,exponent,sign);
-    cout<<coefficient<<" "<<exponent<<endl;
-    insert(p.L,exponent,coefficient);
 }
 void add_poly(poly &p,poly &q,poly &r)
 {
@@ -211,7 +207,45 @@ void sub_poly(poly &p,poly &q,poly &r)
 }
 void multiply_poly(poly &p,poly &q,poly &r)
 {
-    
+    Node *L1 = p.L.L;
+    Node *L2 = q.L.L;
+    List L3 = r.L;
+    Node *start1 = L1->next;
+    Node *start2 = L2->next;
+    Node *aux = NULL;
+    int coeff,power;
+    while(start1 != L1)
+    {   
+        start2 = L2->next;
+        coeff = start1->coeff;
+        power = start1->power;
+        while(start2 != L2)
+        {
+            coeff *= start2->coeff;
+            power += start2->power;
+            aux = Find(L3,power);
+            if(aux != NULL)
+            {
+                coeff += aux->coeff;
+                if(coeff == 0)
+                {
+                    Delete(L3,power);
+                } 
+                else
+                {
+                    aux->coeff = coeff;   
+                }
+            }
+            else
+            {
+                Insert(r,power,coeff);   
+            }
+            coeff = start1->coeff;
+            power = start1->power;
+            start2 = start2->next;
+        }
+        start1 = start1->next;
+    }
 }
 void display_poly(poly &p)
 {
@@ -220,28 +254,21 @@ void display_poly(poly &p)
 }
 int main()
 {   
-    poly p,q,r;
-    char ch;
+    poly p,q,r1,r2,r3;
     int coeff,exponent;
-    cout<<"For first polynomial\n";
-    do
-    {
-        cout<<"Enter coefficient and exponent\n";
-        cin>>coeff>>exponent;
-        Insert(p,exponent,coeff);
-        cout<<"Want to add another term press y or Y\n";
-        cin>>ch;
-    } while (ch == 'Y' || ch == 'y');
-    cout<<"For second polynomial\n";
-    do
-    {
-        cout<<"Enter coefficient and exponent\n";
-        cin>>coeff>>exponent;
-        Insert(q,exponent,coeff);
-        cout<<"Want to add another term press y or Y\n";
-        cin>>ch;
-    } while (ch == 'Y' || ch == 'y');
-    sub_poly(p,q,r);
-    display_poly(r);
+    int n;
+    string s1 = "3*x^3+2*x^2+1*x^1";
+    string s2 = "2*x^2+1*x^1";
+    parse_expression(s1,p);
+    parse_expression(s2,q);
+    add_poly(p,q,r1);
+    sub_poly(p,q,r2);
+    multiply_poly(p,q,r3);
+    cout<<"Addition\n";
+    display_poly(r1);
+    cout<<"Subtraction\n";
+    display_poly(r2);
+    cout<<"Multiplication\n";
+    display_poly(r3);
     return 0;
 }
