@@ -1,2 +1,2 @@
 all:
-	g++ list.cpp polynomial.cpp -o a
+	gcc poly.c test.c  -o a

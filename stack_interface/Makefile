@@ -1,2 +1,2 @@
 all:
-	gcc stack_interface.c test.c -o a
+	g++ stack_interface.c test.c -o a
